@@ -1,4 +1,5 @@
 import Navbar from "@/components/navbar";
+import Sidebar from './../../components/sidebar';
 
 const DashboardLayout = ({
     children
@@ -6,9 +7,9 @@ const DashboardLayout = ({
     children:React.ReactNode
 })=>{
     return (<div className="h-full relative">
-        <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-[80] bg-purple-400">
+        <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-[80] bg-[#a80024]">
             <div>
-                Sidebar
+                <Sidebar/>
             </div>
         </div>
         <main className="md:pl-72 ">
