@@ -15,7 +15,7 @@ import ResumePreview from './resumePreview';
 const FormSection: React.FC = () => {
   const [activeFormIndex, setActiveFormIndex] = useState<number>(1);
   const [enableNext, setEnableNext] = useState<boolean>(false); // Default is false, change once form is validated
-  const { resumeInfo } = useContext(ResumeInfoContext); // Access resume data
+  useContext(ResumeInfoContext); // Access resume data
 
   const renderFormComponent = () => {
     switch (activeFormIndex) {
