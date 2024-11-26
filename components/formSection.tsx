@@ -43,6 +43,7 @@ const FormSection: React.FC = () => {
               <Button onClick={() => window.print()} className="bg-gray-500 text-white">
                 Print
               </Button>
+
             </div>
           </div>
         );
