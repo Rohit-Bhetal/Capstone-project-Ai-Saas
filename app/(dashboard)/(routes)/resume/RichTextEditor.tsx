@@ -15,17 +15,17 @@ interface RichTextEditorProps {
 }
 
 const RichTextEditor: React.FC<RichTextEditorProps> = ({ onRichTextEditorChange, index, defaultValue }) => {
+  const { resumeInfo } = useContext(ResumeInfoContext) as unknown as { resumeInfo: { Experience: { title: string }[] } }; // Correctly type the context
   const [value, setValue] = useState<string>(defaultValue);
-  const { resumeInfo } = useContext(ResumeInfoContext);
   const [loading, setLoading] = useState<boolean>(false);
 
   const GenerateSummeryFromAI = async () => {
-    if (!resumeInfo?.experience?.[index]?.title) {
+    if (!resumeInfo?.Experience?.[index]?.title) {
       toast('Please Add Position Title');
       return;
     }
     setLoading(true);
-    const prompt = PROMPT.replace('{positionTitle}', resumeInfo.experience[index].title);
+    const prompt = PROMPT.replace('{positionTitle}', resumeInfo.Experience[index].title);
 
     try {
       const result = await AIChatSession.sendMessage(prompt);
@@ -35,14 +35,15 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ onRichTextEditorChange,
     } catch (error) {
       toast('Error generating summary');
       console.error('Error:', error); // Log error for debugging
+    } finally {
+      setLoading(false);
     }
-    
   };
 
   return (
     <div>
       <div className="flex justify-between my-2">
-        <label className="text-xs">Summery</label>
+        <label className="text-xs">Summary</label>
         <Button
           variant="outline"
           size="sm"
