@@ -4,7 +4,7 @@ import Link from "next/link";
 import  Image  from 'next/image';
 import { Montserrat } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, VideoIcon } from "lucide-react";
+import { Code, ImageIcon, LayoutDashboard,File, MessageSquare, Music, Settings, VideoIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const poppins =Montserrat({ weight: "600", subsets: ["latin"] });
@@ -45,6 +45,12 @@ const routes = [{
     href: "/code",
     color: "text-green-700",
   },
+  {
+    label: "Resume Builder",
+    icon: File,
+    color: "text-red-700",
+    href: "/resume",
+},
   {
     label: "Settings",
     icon: Settings,

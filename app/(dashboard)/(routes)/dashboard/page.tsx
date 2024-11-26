@@ -8,6 +8,7 @@ import {
 	MessageSquare,
 	Music,
 	VideoIcon,
+	File
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
@@ -47,6 +48,13 @@ const tools = [
 		color: "text-green-700",
 		bgColor: "bg-green-700/10",
 		href: "/code",
+	},
+	{
+		label: "Resume Builder",
+		icon: File,
+		color: "text-red-700",
+		bgColor: "bg-red-700/10",
+		href: "/resume",
 	},
 ];
 
