@@ -63,11 +63,11 @@ interface SummeryProps {
 }
 
 const Summery: React.FC<SummeryProps> = ({ enabledNext }) => {
-  const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext) as { resumeInfo: ResumeInfo | null, setResumeInfo: React.Dispatch<React.SetStateAction<ResumeInfo | null>> };  // Type assertion
+  const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext) as { resumeInfo: ResumeInfo | null, setResumeInfo: React.Dispatch<React.SetStateAction<ResumeInfo | null>> }; // Type assertion
   const [summery, setSummery] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const { resumeId } = useParams<{ resumeId: string }>();
-  const [aiGeneratedSummeryList, setAiGenerateSummeryList] = useState<AIGeneratedSummary[] | null>(null);
+  const [aiGeneratedSummeryList, setAiGenerateSummeryList] = useState<AIGeneratedSummary[]>([]); // Initialize as an empty array
 
   useEffect(() => {
     if (summery && resumeInfo) {
@@ -88,9 +88,6 @@ const Summery: React.FC<SummeryProps> = ({ enabledNext }) => {
     setAiGenerateSummeryList(generatedSummaries);
     setLoading(false);
   };
-
-  // Download summary as PDF
-
 
   return (
     <div>
@@ -126,7 +123,7 @@ const Summery: React.FC<SummeryProps> = ({ enabledNext }) => {
         </form>
       </div>
 
-      {aiGeneratedSummeryList && (
+      {aiGeneratedSummeryList.length > 0 && ( // Check if there are items in the list
         <div className="my-5">
           <h2 className="font-bold text-lg">Suggestions</h2>
           {aiGeneratedSummeryList.map((item, index) => (
@@ -141,8 +138,6 @@ const Summery: React.FC<SummeryProps> = ({ enabledNext }) => {
           ))}
         </div>
       )}
-
-      
     </div>
   );
 };
