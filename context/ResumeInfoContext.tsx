@@ -1,18 +1,17 @@
-// ResumeInfoContext.tsx
 import React, { createContext, useState, ReactNode } from 'react';
 
 interface ResumeInfo {
-  firstName?: string;
-  lastName?: string;
-  jobTitle?: string;
-  address?: string;
-  phone?: string;
-  email?: string;
-  themeColor?: string;
-  summery?: string;
-  experience?: Experience[];
-  education?: Education[];
-  skills?: Skill[];
+  firstName: string;
+  lastName: string;
+  jobTitle: string;
+  address: string;
+  phone: string;
+  email: string;
+  themeColor: string;
+  summery: string;
+  experience: Experience[];
+  education: Education[];
+  skills: Skill[];
 }
 
 interface Experience {
@@ -44,18 +43,14 @@ interface Skill {
 }
 
 interface ResumeInfoContextType {
-  resumeInfo: ResumeInfo | null; // Allowing null
-  setResumeInfo: React.Dispatch<React.SetStateAction<ResumeInfo | null>>; // Allowing null for state update
+  resumeInfo: ResumeInfo | null;
+  setResumeInfo: React.Dispatch<React.SetStateAction<ResumeInfo | null>>;
 }
 
-export const ResumeInfoContext = createContext<ResumeInfoContextType | undefined>(undefined);
+const ResumeInfoContext = createContext<ResumeInfoContextType | undefined>(undefined);
 
-interface ResumeInfoProviderProps {
-  children: ReactNode;
-}
-
-export const ResumeInfoProvider: React.FC<ResumeInfoProviderProps> = ({ children }) => {
-  const [resumeInfo, setResumeInfo] = useState<ResumeInfo | null>(null); // Allowing null in the state
+const ResumeInfoProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [resumeInfo, setResumeInfo] = useState<ResumeInfo | null>(null);
 
   return (
     <ResumeInfoContext.Provider value={{ resumeInfo, setResumeInfo }}>
@@ -63,3 +58,5 @@ export const ResumeInfoProvider: React.FC<ResumeInfoProviderProps> = ({ children
     </ResumeInfoContext.Provider>
   );
 };
+
+export { ResumeInfoContext, ResumeInfoProvider };

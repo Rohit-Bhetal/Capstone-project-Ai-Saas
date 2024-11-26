@@ -15,6 +15,47 @@ interface AIGeneratedSummary {
   summary: string;
 }
 
+interface ResumeInfo {
+  firstName: string;
+  lastName: string;
+  jobTitle: string;
+  address: string;
+  phone: string;
+  email: string;
+  themeColor: string;
+  summery: string;
+  experience: Experience[];
+  education: Education[];
+  skills: Skill[];
+}
+interface Experience {
+  id: number;
+  title: string;
+  companyName: string;
+  city: string;
+  state: string;
+  startDate: string;
+  endDate?: string;
+  currentlyWorking: boolean;
+  workSummery: string;
+}
+
+interface Education {
+  id: number;
+  universityName: string;
+  startDate: string;
+  endDate: string;
+  degree: string;
+  major: string;
+  description: string;
+}
+
+interface Skill {
+  id: number;
+  name: string;
+  rating: number;
+}
+
 const prompt = "Job Title: {jobTitle} , Depends on job title give me list of summery for 3 experience level, Mid Level and Freasher level in 3 -4 lines in array format, With summery and experience_level Field in JSON Format";
 
 interface SummeryProps {
@@ -22,14 +63,14 @@ interface SummeryProps {
 }
 
 const Summery: React.FC<SummeryProps> = ({ enabledNext }) => {
-  const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
+  const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext) as { resumeInfo: ResumeInfo | null, setResumeInfo: React.Dispatch<React.SetStateAction<ResumeInfo | null>> };  // Type assertion
   const [summery, setSummery] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const { resumeId } = useParams<{ resumeId: string }>();
   const [aiGeneratedSummeryList, setAiGenerateSummeryList] = useState<AIGeneratedSummary[] | null>(null);
 
   useEffect(() => {
-    if (summery) {
+    if (summery && resumeInfo) {
       setResumeInfo({
         ...resumeInfo,
         summery: summery,
@@ -49,13 +90,7 @@ const Summery: React.FC<SummeryProps> = ({ enabledNext }) => {
   };
 
   // Download summary as PDF
-  const downloadPDF = () => {
-    const doc = new jsPDF();
-    doc.text('Resume Summary', 20, 10);
-    doc.text(`Job Title: ${resumeInfo?.jobTitle || 'N/A'}`, 20, 20);
-    doc.text(`Summary: ${summery}`, 20, 30);
-    doc.save('resume_summary.pdf');
-  };
+
 
   return (
     <div>
@@ -107,11 +142,7 @@ const Summery: React.FC<SummeryProps> = ({ enabledNext }) => {
         </div>
       )}
 
-      <div className="mt-4 flex justify-end">
-        <Button onClick={downloadPDF} className="border-primary text-primary">
-          Download PDF
-        </Button>
-      </div>
+      
     </div>
   );
 };

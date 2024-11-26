@@ -1,44 +1,17 @@
-import { AIChatSession } from '@/app/api/AiModelApi';
+import React, { useState } from 'react';
+import { BtnBold, BtnBulletList, BtnItalic, BtnLink, BtnNumberedList, BtnStrikeThrough, BtnUnderline, Editor, EditorProvider, Separator, Toolbar } from 'react-simple-wysiwyg';
 import { Button } from '@/components/ui/button';
-import { Brain, LoaderCircle } from 'lucide-react';
-import React, { useContext, useState } from 'react';
-import { BtnBold, BtnBulletList, BtnClearFormatting, BtnItalic, BtnLink, BtnNumberedList, BtnStrikeThrough, BtnStyles, BtnUnderline, Editor, EditorProvider, HtmlButton, Separator, Toolbar } from 'react-simple-wysiwyg';
-import { toast } from 'sonner';
-import { ResumeInfoContext } from '@/context/ResumeInfoContext';
-
-const PROMPT = 'position title: {positionTitle} , Depends on position title give me 5-7 bullet points for my experience in resume (Please do not add experience level and No JSON array) , give me result in HTML tags';
+import { LoaderCircle } from 'lucide-react';
 
 interface RichTextEditorProps {
-  onRichTextEditorChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Updated this to work with the contenteditable event
+  onRichTextEditorChange: (value: string) => void;
   index: number;
-  defaultValue: string;
+  value: string;
+  onGenerateSummary: () => void; // Add this line to accept the summary generation function
 }
 
-const RichTextEditor: React.FC<RichTextEditorProps> = ({ onRichTextEditorChange, index, defaultValue }) => {
-  const { resumeInfo } = useContext(ResumeInfoContext) as unknown as { resumeInfo: { Experience: { title: string }[] } }; // Correctly type the context
-  const [value, setValue] = useState<string>(defaultValue);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const GenerateSummeryFromAI = async () => {
-    if (!resumeInfo?.Experience?.[index]?.title) {
-      toast('Please Add Position Title');
-      return;
-    }
-    setLoading(true);
-    const prompt = PROMPT.replace('{positionTitle}', resumeInfo.Experience[index].title);
-
-    try {
-      const result = await AIChatSession.sendMessage(prompt);
-      const resp = await result.response.text();
-      console.log('AI Response:', resp); // Log the response for debugging
-      setValue(resp.replace('[', '').replace(']', ''));
-    } catch (error) {
-      toast('Error generating summary');
-      console.error('Error:', error); // Log error for debugging
-    } finally {
-      setLoading(false);
-    }
-  };
+const RichTextEditor: React.FC<RichTextEditorProps> = ({ onRichTextEditorChange, index, value, onGenerateSummary }) => {
+  const [loading, setLoading] = useState(false);
 
   return (
     <div>
@@ -47,25 +20,23 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ onRichTextEditorChange,
         <Button
           variant="outline"
           size="sm"
-          onClick={GenerateSummeryFromAI}
+          onClick={onGenerateSummary} // Use the passed `onGenerateSummary` prop
           disabled={loading}
           className="flex gap-2 border-primary text-primary"
         >
           {loading ? (
             <LoaderCircle className="animate-spin" />
           ) : (
-            <>
-              <Brain className="h-4 w-4" /> Generate from AI
-            </>
+            <>Generate from AI</>
           )}
         </Button>
       </div>
+
       <EditorProvider>
         <Editor
           value={value}
           onChange={(e: any) => {
-            setValue(e.target.value);
-            onRichTextEditorChange(e); // Use `any` type here for the event
+            onRichTextEditorChange(e.target.value); // Pass the string directly
           }}
         >
           <Toolbar>

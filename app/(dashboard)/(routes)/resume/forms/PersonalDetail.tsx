@@ -49,7 +49,8 @@ function PersonalDetail({ enabledNext }: PersonalDetailProps) {
     }
 
     // Check if all fields are filled
-    const allFieldsFilled = Object.values(formData).every((value) => value?.length > 0);
+    const allFieldsFilled = Object.values(formData).every((value) => typeof value === 'string' && value.length > 0);
+
     enabledNext(allFieldsFilled); // Enable or disable the "Next" button
   }, [formData, enabledNext]);
 
