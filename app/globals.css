@@ -89,18 +89,4 @@ html,body,:root{
     @apply bg-background text-foreground;
   }
 }
-@media print {
-  body * {
-    visibility: hidden;
-  }
 
-  #resume-preview, #resume-preview * {
-    visibility: visible;
-  }
-
-  #resume-preview {
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-}

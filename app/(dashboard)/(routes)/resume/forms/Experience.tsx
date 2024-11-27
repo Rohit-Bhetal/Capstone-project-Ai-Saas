@@ -4,8 +4,8 @@ import { Input } from '@/components/ui/input';
 import { ResumeInfoContext } from '@/context/ResumeInfoContext';
 import { toast } from 'sonner';
 import { LoaderCircle } from 'lucide-react';
-import { AIChatSession } from '@/app/api/AiModelApi';
 import RichTextEditor from '../RichTextEditor';
+import { AIChatSession } from '@/app/api/AiModelApi';
 
 interface ExperienceEntry {
   id?: string;
@@ -51,7 +51,7 @@ function Experience() {
   const handleChange = (index: number, event: React.ChangeEvent<HTMLInputElement>): void => {
     const updatedList = [...experienceList];
     const { name, type, checked, value } = event.target;
-  
+
     // Handle checkbox specifically for 'currentlyWorking' field
     if (type === "checkbox" && name === "currentlyWorking") {
       updatedList[index] = {
@@ -64,10 +64,9 @@ function Experience() {
         [name]: value,  // for other fields (like text or date), use 'value'
       };
     }
-  
+
     setExperienceList(updatedList);
   };
-  
 
   const handleRichTextEditor = (value: string, name: string, index: number): void => {
     const updatedList = [...experienceList];
@@ -97,9 +96,27 @@ function Experience() {
     toast.success('Experience saved successfully!');
   };
 
-  function GenerateSummeryFromAI(index: number): void {
-    throw new Error('Function not implemented.');
+  const GenerateSummeryFromAI = async (index: number): Promise<void> => {
+  setLoading(true);
+  const PROMPT = `Generate a summary for the job experience: ${experienceList[index].title || 'Software Developer'}.`;
+  
+  try {
+    const result = await AIChatSession.sendMessage(PROMPT);
+    const generatedSummaries = JSON.parse(result.response.text());
+    
+    const updatedList = [...experienceList];
+    updatedList[index].workSummery = generatedSummaries.summary;
+    setExperienceList(updatedList);
+    
+    toast.success('Summary generated successfully!');
+  } catch (error) {
+    toast.error('Failed to generate summary.');
+    console.error(error);
+  } finally {
+    setLoading(false);
   }
+};
+
 
   return (
     <div>
@@ -163,22 +180,21 @@ function Experience() {
                 <div>
                   <label className="text-xs">Currently Working</label>
                   <Input
-                    type="checkbox" 
+                    type="checkbox"
                     name="currentlyWorking"
                     onChange={(e) => handleChange(index, e)}
                     checked={item?.currentlyWorking}
-                    />
+                  />
                 </div>
                 <div className="col-span-2">
-                <RichTextEditor
-                        index={index}
-                        value={item?.workSummery || ''} // Ensure value is a string
-                        onRichTextEditorChange={(value: string) =>
-                            handleRichTextEditor(value, 'workSummery', index)
-                        }
-                        onGenerateSummary={() => GenerateSummeryFromAI(index)} // Pass the generate summary function
-                    />
-    
+                  <RichTextEditor
+                    index={index}
+                    value={item?.workSummery || ''} // Ensure value is a string
+                    onRichTextEditorChange={(value: string) =>
+                      handleRichTextEditor(value, 'workSummery', index)
+                    }
+                    onGenerateSummary={() => GenerateSummeryFromAI(index)} // Pass the generate summary function
+                  />
                 </div>
               </div>
             </div>

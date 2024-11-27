@@ -16,7 +16,38 @@ const FormSection: React.FC = () => {
   const [activeFormIndex, setActiveFormIndex] = useState<number>(1);
   const [enableNext, setEnableNext] = useState<boolean>(false); // Default is false, change once form is validated
   useContext(ResumeInfoContext); // Access resume data
-
+  const handlePrint = () => {
+    const resumePreview = document.getElementById("resume-preview");
+    if (!resumePreview) return;
+ 
+    const printWindow = window.open("", "_blank"); // Open a new blank window
+    if (!printWindow) return;
+ 
+    // Write the ResumePreview content into the new window
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Resume Preview</title>
+          <style>
+            /* Add print-specific styles here */
+            body {
+              margin: 20px;
+              font-family: Arial, sans-serif;
+            }
+          </style>
+        </head>
+        <body>
+          ${resumePreview.innerHTML}
+        </body>
+      </html>
+    `);
+ 
+    // Close the document to apply styles and trigger the print dialog
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.close();
+ };
+ 
   const renderFormComponent = () => {
     switch (activeFormIndex) {
       case 1:
@@ -29,24 +60,26 @@ const FormSection: React.FC = () => {
         return <Education />;
       case 5:
         return <Skills />;
-      case 6:
-        return (
-          <div>
-            <h2 className="text-2xl font-medium mb-4 text-center">
-              Your Resume Preview
-            </h2>
-            <div id="resume-preview">
-              <ResumePreview />
+        case 6:
+          return (
+            <div>
+              <h2 className="text-2xl font-medium mb-4 text-center">
+                Your Resume Preview
+              </h2>
+              <div id="resume-preview">
+                <ResumePreview />
+              </div>
+              <div className="mt-4 flex justify-center gap-4">
+                <Button
+                  onClick={handlePrint}
+                  className="bg-gray-500 text-white"
+                >
+                  Print
+                </Button>
+              </div>
             </div>
-            <div className="mt-4 flex justify-center gap-4">
-              {/* Remove Download PDF button */}
-              <Button onClick={() => window.print()} className="bg-gray-500 text-white">
-                Print
-              </Button>
-
-            </div>
-          </div>
-        );
+          );
+       
       default:
         return null;
     }
