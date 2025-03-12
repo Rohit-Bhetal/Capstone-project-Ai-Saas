@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
 import { Card, CardContent } from "@/components/ui/card";
+import { useProModel } from "@/hooks/use-pro-modal";
 
 const formSchema = z.object({
   prompt: z.string().min(1, { message: "Image prompt is required" }),
@@ -22,7 +23,7 @@ const formSchema = z.object({
 const ImagePage = () => {
   const router = useRouter();
   const [images, setImages] = useState<Array<{ url: string, prompt: string }>>([]);
-
+  const proModal = useProModel();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,6 +45,10 @@ const ImagePage = () => {
       
       form.reset();
     } catch (error: any) {
+      if(error?.response?.status===403){
+        proModal.onOpen();
+
+      }
       console.error("Error generating image:", error);
     } finally {
       router.refresh();

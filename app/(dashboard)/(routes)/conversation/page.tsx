@@ -19,9 +19,11 @@ import { Empty } from '@/components/empty';
 import { Loader } from '@/components/loader';
 import { UserAvatar } from '@/components/user-avatar';
 import { BotAvatar } from '@/components/bot-avatar';
+import { useProModel } from '@/hooks/use-pro-modal';
 
 const ConversationPage = ()=>{
     const router=useRouter();
+    const proModal = useProModel();
     type MessageRole = "user" | "model";
     interface GeminiMessage {
         role: MessageRole;
@@ -57,6 +59,10 @@ const ConversationPage = ()=>{
 
         } catch (error:any) {
             //TODO: Open Pro Model
+            if(error?.response?.status===403){
+                proModal.onOpen();
+  
+              }
         } finally{
             router.refresh();
         }
