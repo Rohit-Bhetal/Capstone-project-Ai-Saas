@@ -8,7 +8,10 @@ import {
 	MessageSquare,
 	Music,
 	VideoIcon,
-	File
+	File,
+	Microscope,
+	BriefcaseMedical
+
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
@@ -49,12 +52,20 @@ const tools = [
 		bgColor: "bg-green-700/10",
 		href: "/code",
 	},
+	
 	{
-		label: "Resume Builder",
-		icon: File,
-		color: "text-red-700",
-		bgColor: "bg-red-700/10",
-		href: "/resume",
+		label: "Health Ai Agent",
+		icon: BriefcaseMedical,
+		color: "text-pink-700",
+		href: "/health",
+		isFree:"True"
+	},
+	  {
+		label: "Research Helper Agentic Ai",
+		icon: Microscope ,
+		color: "text-blue-700",
+		href: "/research",
+		isFree:"True"
 	},
 ];
 
@@ -85,6 +96,7 @@ const DashboardPage = ()=>{
 								<tool.icon className={cn("w-8 h-8", tool.color)} />
 							</div>
 							<div className="font-semibold">{tool.label}</div>
+							{tool.isFree?<div className="rounded-xl font-bold animate h-8 x-10 border px-4 py-2 text-center pt-1 pr-1">Free🔥</div>:<></>}
 						</div>
 						<ArrowRight className="w-5 h-5 text-[#a80024]" />
 					</Card>

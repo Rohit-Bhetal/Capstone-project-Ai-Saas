@@ -7,6 +7,9 @@ import { Check, Code, File, ImageIcon, MessageSquare, Music, VideoIcon, Zap } fr
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { useState } from "react";
+import toast from "react-hot-toast";
 const tools = [
 	{
 		label: "Conversation",
@@ -53,6 +56,21 @@ const tools = [
 ];
 export const ProModal =()=>{
     const proModal = useProModel();
+	const [loading,setLoading]= useState(false);
+
+	const onSubscribe = async()=>{
+		try {
+			setLoading(true);
+			const response = axios.get('/api/stripe');
+			window.location.href=(await response).data.url;
+			
+		} catch (error) {
+			console.log(error,"STRIPE_CLIENT_ERROR")
+			toast.error("Something went wrong.")
+		}finally{
+			setLoading(false);
+		}
+	}
 
     return (
         <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
@@ -84,6 +102,8 @@ export const ProModal =()=>{
                 </DialogHeader>
                 <DialogFooter>
                     <Button size="lg"
+						disabled={loading}
+					    onClick={onSubscribe}
                         variant="supreme"
                         className="w-full">
                         Upgrade

@@ -8,11 +8,15 @@ import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
 import { useProModel } from "@/hooks/use-pro-modal";
 
-interface FreeCounterProps{
-    apiLimitCount:number;
-  }
 
-export const FreeCounter = ({apiLimitCount=0}:FreeCounterProps)=>{
+
+export default function FreeCounter({
+    apiLimitCount = 0,
+    isPro = false
+  }: {
+    apiLimitCount: number;
+    isPro: boolean;
+  }){
     const [mounted,setMounted] = useState(false);
     const proModal = useProModel();
     useEffect(()=>{
@@ -21,9 +25,10 @@ export const FreeCounter = ({apiLimitCount=0}:FreeCounterProps)=>{
     if(!mounted){
         return null;
     }
+    if (isPro) return null;
     return (
         <div className="px-3">
-            <Card className='bg-white/10 border-0'>
+            <Card className='bg-white/10 border-0 '>
                 <CardContent className="py-6">
                     <div className="text-center text-sm text-white mb-4 space-y-2">
                         <p>

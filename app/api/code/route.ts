@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
 import { checkApiLimit, increaseApiLimit } from "@/lib/api-limit";
+import { checkSubscription } from "@/lib/subscription";
 export async function POST(
     req:Request
 ){
@@ -17,7 +18,8 @@ export async function POST(
             return new NextResponse("Invalid or missing messages", { status: 400 });
           }
           const freeTrial = await checkApiLimit();
-          if (!freeTrial){
+          const isPro = await checkSubscription();
+          if (!freeTrial && !isPro){
             return new NextResponse("Free trial has expired",{status:403})
           }
       
@@ -35,7 +37,9 @@ export async function POST(
           }
       
           const responseText = response.response.text();
-          await increaseApiLimit();
+          if(!isPro){
+            await increaseApiLimit();
+          }
           return NextResponse.json({
             role: "model",
             parts: [responseText]

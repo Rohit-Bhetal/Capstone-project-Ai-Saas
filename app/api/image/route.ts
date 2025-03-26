@@ -1,5 +1,6 @@
 
 import { checkApiLimit, increaseApiLimit } from "@/lib/api-limit";
+import { checkSubscription } from "@/lib/subscription";
 import { NextResponse } from "next/server";
 
 
@@ -15,7 +16,8 @@ export async function POST(
             return new NextResponse("Invalid or missing messages", { status: 400 });
           }
           const freeTrial = await checkApiLimit();
-                    if (!freeTrial){
+                    const isPro = await checkSubscription();
+                              if (!freeTrial && !isPro){
                       return new NextResponse("Free trial has expired",{status:403})
                     }
           const response = await fetch('https://api.aimlapi.com/images/generations', {
@@ -30,7 +32,9 @@ export async function POST(
         if (!response) {
           return new NextResponse("No response generated", { status: 500 });
         }
-        await increaseApiLimit();
+        if(!isPro){
+          await increaseApiLimit();
+        }
         return  NextResponse.json({
           role: "model",
           parts: [response.url]

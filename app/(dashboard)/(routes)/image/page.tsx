@@ -15,6 +15,7 @@ import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
 import { Card, CardContent } from "@/components/ui/card";
 import { useProModel } from "@/hooks/use-pro-modal";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   prompt: z.string().min(1, { message: "Image prompt is required" }),
@@ -48,6 +49,8 @@ const ImagePage = () => {
       if(error?.response?.status===403){
         proModal.onOpen();
 
+      }else{
+        toast.error("Something went Wrong")
       }
       console.error("Error generating image:", error);
     } finally {

@@ -1,9 +1,7 @@
 {
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/api/conversation/route": "app/api/conversation/route.js",
-  "/(landing)/page": "app/(landing)/page.js",
-  "/(auth)/(routes)/sign-up/[[...sign-up]]/page": "app/(auth)/(routes)/sign-up/[[...sign-up]]/page.js",
   "/(dashboard)/(routes)/dashboard/page": "app/(dashboard)/(routes)/dashboard/page.js",
-  "/(dashboard)/(routes)/conversation/page": "app/(dashboard)/(routes)/conversation/page.js",
-  "/(dashboard)/(routes)/image/page": "app/(dashboard)/(routes)/image/page.js"
+  "/(dashboard)/(routes)/settings/page": "app/(dashboard)/(routes)/settings/page.js",
+  "/(dashboard)/(routes)/health/page": "app/(dashboard)/(routes)/health/page.js",
+  "/(dashboard)/(routes)/code/page": "app/(dashboard)/(routes)/code/page.js"
 }
