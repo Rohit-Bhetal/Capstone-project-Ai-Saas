@@ -30,9 +30,10 @@ const routes = [{
     color: "text-pink-700",
   },
   {
-    label: "Video Generation",
+    label: "Video Summarization",
     icon: VideoIcon,
     href: "/video",
+    isFree:true,
     color: "text-orange-700",
   },
   {

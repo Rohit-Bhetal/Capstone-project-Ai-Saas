@@ -2,7 +2,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, set up your environment variables:
+
+1. Copy the `.env.local.example` file to `.env.local`
+2. If you have a Hugging Face API key, add it to the `.env.local` file
+
+Then, run the development server:
 
 ```bash
 npm run dev

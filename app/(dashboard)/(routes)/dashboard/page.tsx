@@ -39,10 +39,11 @@ const tools = [
 		href: "/image",
 	},
 	{
-		label: "Video Generation",
+		label: "Video Summarization",
 		icon: VideoIcon,
 		color: "text-orange-700",
 		bgColor: "bg-orange-700/10",
+		isFree:"True",
 		href: "/video",
 	},
 	{
