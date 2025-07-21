@@ -170,7 +170,7 @@
 			</tr>
 			<tr>
 				<td><b><a href='https://github.com/Rohit-Bhetal/Capstone-project-Ai-Saas/blob/master/lib/utils.ts'>utils.ts</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
+				<td><code>❯ Basic Needed Utils File,for Tailwind and Shadcn</code></td>
 			</tr>
 			</table>
 		</blockquote>
